@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Primary SEO -->
+  <title>Headline Analyzer — Free Headline Score Checker & Title Effectiveness Tool</title>
+  <meta name="description" content="Free headline analyzer. Paste any blog title, email subject, or YouTube title — get an instant 0–100 score, category breakdown, and specific rewrite suggestions. No signup." />
+  <link rel="canonical" href="https://headline-scorer.vercel.app/" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Free Headline Analyzer — Score Your Title Instantly" />
+  <meta property="og:description" content="Paste any headline and get an instant score plus specific suggestions to improve it. No login, no email, completely free." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://headline-scorer.vercel.app/" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Free Headline Analyzer — Score Your Title Instantly" />
+  <meta name="twitter:description" content="Paste any headline and get an instant score plus specific suggestions. No login required." />
+
+  <!-- WebApplication JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Headline Analyzer",
+    "url": "https://headline-scorer.vercel.app/",
+    "description": "Free headline score checker. Analyzes power words, emotional impact, length, format, and clarity to give your headline a score from 0 to 100.",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "featureList": [
+      "Instant 0–100 headline score",
+      "Power word detection (200+ words)",
+      "Emotional trigger word analysis",
+      "Length and format scoring",
+      "3 AI-style rewrite suggestions",
+      "History of last 10 headlines"
+    ]
+  }
+  </script>
+
+  <!-- FAQPage JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What makes a good headline score?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A score of 70+ is considered good. Scores above 80 are excellent. Great headlines typically include a power word, a number or specific detail, and are 6–10 words long. A question format or bracket adds bonus points."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How is the headline score calculated?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The score is calculated across 5 categories: Power Words (25 pts), Emotional Impact (20 pts), Optimal Length (20 pts), Numbers (15 pts), and Format bonuses like questions, brackets, or How-To openers (20 pts). Clickbait or spam language reduces the score."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What are power words in headlines?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Power words are psychologically persuasive terms that trigger an emotional or action-oriented response. Examples include: proven, secret, ultimate, instantly, guaranteed, free, exclusive, remarkable, effortless, and transform. Headlines with power words get significantly higher click-through rates."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How long should a blog headline be?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The ideal headline length is 6–10 words, which balances clarity and SEO. For email subject lines, 4–7 words tends to perform best on mobile. Headlines over 14 words are often truncated in search results and social media previews."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does this headline analyzer work for email subject lines?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. The same scoring principles apply to email subject lines: power words, emotional triggers, numbers, and length all predict open rates. Use the tool to score and improve any email subject before sending."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <!-- Breadcrumb JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [{ "@type": "ListItem", "position": 1, "name": "Home", "item": "https://headline-scorer.vercel.app/" }]
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg: #f5f7fa;
+      --surface: #ffffff;
+      --surface2: #f0f3f8;
+      --border: #e2e8f0;
+      --text: #1a202c;
+      --muted: #718096;
+      --accent: #6c63ff;
+      --accent2: #5a52d5;
+      --green: #38a169;
+      --yellow: #d69e2e;
+      --red: #e53e3e;
+      --shadow: 0 4px 24px rgba(0,0,0,0.07);
+      --radius: 14px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* NAV */
+    nav { display: flex; align-items: center; justify-content: space-between; padding: 14px 24px; background: var(--surface); border-bottom: 1px solid var(--border); }
+    .nav-brand { font-weight: 800; font-size: 1rem; color: var(--accent); text-decoration: none; }
+    .nav-bc { font-size: 0.8rem; color: var(--muted); }
+
+    main { max-width: 780px; margin: 0 auto; padding: 40px 20px 80px; }
+
+    h1 { font-size: clamp(1.6rem, 4vw, 2.1rem); font-weight: 800; margin-bottom: 8px; }
+    .subtitle { color: var(--muted); font-size: 1rem; margin-bottom: 32px; }
+
+    /* CARD */
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; margin-bottom: 20px; box-shadow: var(--shadow); }
+    .card-title { font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); margin-bottom: 16px; }
+
+    /* INPUT */
+    #headlineInput {
+      width: 100%;
+      font-size: 1.15rem;
+      font-weight: 500;
+      padding: 14px 16px;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      background: var(--surface2);
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+      resize: none;
+      font-family: inherit;
+      line-height: 1.5;
+    }
+    #headlineInput:focus { border-color: var(--accent); }
+    #headlineInput::placeholder { color: var(--muted); font-weight: 400; }
+
+    .input-meta { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
+    .word-count { font-size: 0.8rem; color: var(--muted); }
+    .word-count span { font-weight: 700; color: var(--text); }
+
+    .analyze-btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 9px 22px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .analyze-btn:hover { background: var(--accent2); transform: translateY(-1px); }
+
+    /* SCORE RING */
+    #resultsSection { display: none; }
+
+    .score-row { display: flex; align-items: center; gap: 28px; margin-bottom: 24px; flex-wrap: wrap; }
+
+    .score-ring-wrap { flex-shrink: 0; position: relative; width: 110px; height: 110px; }
+    .score-ring-wrap svg { transform: rotate(-90deg); }
+    .score-ring-bg { fill: none; stroke: var(--surface2); stroke-width: 10; }
+    .score-ring-fill { fill: none; stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 0.6s ease, stroke 0.4s; }
+    .score-label { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .score-num { font-size: 2rem; font-weight: 900; line-height: 1; }
+    .score-of { font-size: 0.65rem; color: var(--muted); }
+
+    .score-verdict { flex: 1; min-width: 180px; }
+    .verdict-badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; margin-bottom: 8px; }
+    .verdict-poor { background: #fff5f5; color: var(--red); }
+    .verdict-fair { background: #fffaf0; color: var(--yellow); }
+    .verdict-good { background: #f0fff4; color: var(--green); }
+    .verdict-great { background: #ebf8ff; color: #2b6cb0; }
+    .verdict-excellent { background: #faf5ff; color: var(--accent); }
+    .verdict-text { font-size: 0.88rem; color: var(--muted); line-height: 1.5; }
+
+    /* CATEGORY BARS */
+    .categories { display: flex; flex-direction: column; gap: 14px; }
+    .cat-row { display: flex; flex-direction: column; gap: 5px; }
+    .cat-header { display: flex; justify-content: space-between; align-items: center; }
+    .cat-name { font-size: 0.85rem; font-weight: 600; }
+    .cat-pts { font-size: 0.78rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+    .cat-bar-bg { height: 8px; background: var(--surface2); border-radius: 4px; overflow: hidden; }
+    .cat-bar-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
+    .cat-tip { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+
+    /* SUGGESTIONS */
+    #suggestionsSection { display: none; }
+    .suggestion-list { display: flex; flex-direction: column; gap: 10px; }
+    .suggestion-item { display: flex; align-items: flex-start; gap: 10px; padding: 12px 14px; border-radius: 9px; font-size: 0.88rem; line-height: 1.5; }
+    .suggestion-item.warn { background: #fffaf0; border: 1px solid #fad67a; }
+    .suggestion-item.info { background: #ebf8ff; border: 1px solid #90cdf4; }
+    .suggestion-item.good { background: #f0fff4; border: 1px solid #9ae6b4; }
+    .sug-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+    .sug-text { color: var(--text); }
+
+    /* ALTERNATIVES */
+    #altSection { display: none; }
+    .alt-list { display: flex; flex-direction: column; gap: 10px; }
+    .alt-item { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: var(--surface2); border: 1px solid var(--border); border-radius: 9px; padding: 12px 16px; }
+    .alt-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent); margin-bottom: 3px; }
+    .alt-text { font-size: 0.93rem; font-weight: 500; color: var(--text); line-height: 1.4; }
+    .alt-copy-btn { background: var(--surface); border: 1.5px solid var(--border); border-radius: 6px; padding: 6px 12px; font-size: 0.78rem; font-weight: 600; cursor: pointer; color: var(--muted); white-space: nowrap; transition: all 0.15s; flex-shrink: 0; }
+    .alt-copy-btn:hover { background: var(--accent); color: white; border-color: var(--accent); }
+
+    /* HISTORY */
+    #historySection { display: none; }
+    .history-list { display: flex; flex-direction: column; gap: 8px; }
+    .history-item { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; cursor: pointer; transition: border-color 0.15s; }
+    .history-item:hover { border-color: var(--accent); }
+    .history-score-badge { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 800; flex-shrink: 0; }
+    .history-headline { font-size: 0.88rem; color: var(--text); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .history-del { background: none; border: none; cursor: pointer; color: var(--muted); font-size: 1rem; padding: 4px; border-radius: 4px; transition: color 0.15s; }
+    .history-del:hover { color: var(--red); }
+
+    /* HOW IT WORKS */
+    .how-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    @media (max-width: 520px) { .how-grid { grid-template-columns: 1fr; } }
+    .how-step { text-align: center; }
+    .how-num { width: 34px; height: 34px; border-radius: 50%; background: var(--accent); color: white; font-size: 0.95rem; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; }
+    .how-step h3 { font-size: 0.88rem; font-weight: 700; margin-bottom: 4px; }
+    .how-step p { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+
+    /* FAQ */
+    .faq-item { border-bottom: 1px solid var(--border); padding: 15px 0; }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-q { font-weight: 700; font-size: 0.93rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+    .faq-q .chev { font-size: 0.75rem; color: var(--muted); transition: transform 0.2s; flex-shrink: 0; }
+    .faq-q.open .chev { transform: rotate(180deg); }
+    .faq-a { font-size: 0.86rem; color: var(--muted); line-height: 1.65; display: none; padding-top: 8px; }
+    .faq-a.open { display: block; }
+
+    /* SCORE EXAMPLES */
+    .examples-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+    .example-pill { padding: 6px 14px; background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; font-size: 0.82rem; cursor: pointer; color: var(--text); transition: all 0.15s; }
+    .example-pill:hover { background: var(--accent); color: white; border-color: var(--accent); }
+
+    footer { text-align: center; padding: 32px 20px; color: var(--muted); font-size: 0.82rem; border-top: 1px solid var(--border); }
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--accent); }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+    .fade-in { animation: fadeIn 0.3s ease both; }
+
+    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #1a202c; color: white; padding: 10px 20px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; z-index: 999; pointer-events: none; opacity: 0; transition: opacity 0.2s; }
+    .toast.show { opacity: 1; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-brand">Headline Analyzer</a>
+  <span class="nav-bc">Home</span>
+</nav>
+
+<main>
+  <h1>Headline Analyzer</h1>
+  <p class="subtitle">Paste any blog title, email subject, or YouTube title — get an instant score and specific improvements.</p>
+
+  <!-- INPUT CARD -->
+  <div class="card">
+    <div class="card-title">Your Headline</div>
+    <div class="examples-row" id="examplesRow"></div>
+    <textarea id="headlineInput" rows="2" placeholder="Type or paste your headline here…" maxlength="200" oninput="onInput()"></textarea>
+    <div class="input-meta">
+      <div class="word-count">Words: <span id="wordCount">0</span> &nbsp;·&nbsp; Characters: <span id="charCount">0</span></div>
+      <button class="analyze-btn" onclick="analyze()">Analyze →</button>
+    </div>
+  </div>
+
+  <!-- SCORE CARD -->
+  <div class="card fade-in" id="resultsSection">
+    <div class="card-title">Score</div>
+    <div class="score-row">
+      <div class="score-ring-wrap">
+        <svg width="110" height="110" viewBox="0 0 110 110">
+          <circle class="score-ring-bg" cx="55" cy="55" r="48" />
+          <circle class="score-ring-fill" id="scoreRingFill" cx="55" cy="55" r="48"
+            stroke-dasharray="301.6" stroke-dashoffset="301.6" />
+        </svg>
+        <div class="score-label">
+          <span class="score-num" id="scoreNum">0</span>
+          <span class="score-of">/100</span>
+        </div>
+      </div>
+      <div class="score-verdict">
+        <div class="verdict-badge" id="verdictBadge"></div>
+        <div class="verdict-text" id="verdictText"></div>
+      </div>
+    </div>
+
+    <div class="categories" id="categoriesContainer"></div>
+  </div>
+
+  <!-- SUGGESTIONS CARD -->
+  <div class="card fade-in" id="suggestionsSection">
+    <div class="card-title">What to Improve</div>
+    <div class="suggestion-list" id="suggestionList"></div>
+  </div>
+
+  <!-- ALTERNATIVES CARD -->
+  <div class="card fade-in" id="altSection">
+    <div class="card-title">Rewrite Suggestions</div>
+    <div class="alt-list" id="altList"></div>
+  </div>
+
+  <!-- HISTORY CARD -->
+  <div class="card" id="historySection">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+      <div class="card-title" style="margin:0">Recent Headlines</div>
+      <button onclick="clearHistory()" style="background:none;border:none;font-size:0.78rem;color:var(--muted);cursor:pointer;">Clear all</button>
+    </div>
+    <div class="history-list" id="historyList"></div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="card">
+    <div class="card-title">How It Works</div>
+    <div class="how-grid">
+      <div class="how-step">
+        <div class="how-num">1</div>
+        <h3>Paste Your Headline</h3>
+        <p>Enter any blog title, email subject line, YouTube title, or ad headline.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-num">2</div>
+        <h3>Get Your Score</h3>
+        <p>Instantly scored across 5 categories: power words, emotion, length, numbers, and format.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-num">3</div>
+        <h3>Apply Suggestions</h3>
+        <p>See exactly what to add, remove, or change — plus 3 rewritten variations to use directly.</p>
+      </div>
+    </div>
+    <p style="margin-top:20px;font-size:0.83rem;color:var(--muted);">
+      <strong>Scoring is based on:</strong> Power word presence (200+ words), emotional trigger words, ideal length (6–10 words), number inclusion, format bonuses (questions, brackets, How-To openers), and penalties for spam/clickbait language. No AI API — all scoring runs instantly in your browser.
+    </p>
+  </div>
+
+  <!-- FAQ -->
+  <div class="card">
+    <div class="card-title">Frequently Asked Questions</div>
+    <div id="faqContainer"></div>
+  </div>
+</main>
+
+<footer>
+  <p>Headline Analyzer — Free, instant, no login required. Nothing sent to any server.</p>
+  <p style="margin-top:6px;"><a href="/privacy.html">Privacy Policy</a> &nbsp;·&nbsp; <a href="/terms.html">Terms of Use</a></p>
+</footer>
+
+<div class="toast" id="toast">Copied!</div>
+
+<script>
+// ─── DATA ─────────────────────────────────────────────────────────────────────
+const POWER_WORDS = [
+  'proven','secret','ultimate','free','instant','guaranteed','exclusive','remarkable',
+  'effortless','transform','discover','master','unlock','boost','skyrocket','explosive',
+  'revolutionary','incredible','shocking','stunning','unbelievable','jaw-dropping',
+  'mind-blowing','game-changing','life-changing','breakthrough','powerful','essential',
+  'critical','urgent','limited','rare','unique','special','premium','elite',
+  'expert','professional','trusted','certified','official','authentic','real',
+  'definitive','complete','comprehensive','massive','huge','giant','enormous',
+  'tiny','simple','easy','fast','quick','rapid','immediate','now','today',
+  'new','updated','fresh','modern','cutting-edge','advanced','smart','clever',
+  'brilliant','genius','perfect','flawless','awesome','amazing','fantastic',
+  'extraordinary','outstanding','exceptional','magnificent','superb','sensational',
+  'astonishing','unbelievable','staggering','dramatic','epic','legendary','iconic',
+  'proven','tested','reliable','dependable','effective','successful','winning',
+  'profitable','lucrative','valuable','powerful','unstoppable','invincible',
+  'dangerous','forbidden','hidden','secret','exposed','revealed','leaked',
+  'controversial','surprising','unexpected','counterintuitive','unknown','forgotten',
+  'overlooked','underrated','overrated','myth','truth','lies','fact','science',
+  'research','data','study','evidence','results','numbers','statistics',
+  'step-by-step','blueprint','framework','formula','system','strategy','method',
+  'technique','trick','hack','shortcut','cheatsheet','guide','checklist',
+  'template','roadmap','plan','solution','answer','fix','cure','remedy',
+  'save','gain','win','beat','crush','dominate','conquer','achieve',
+  'build','create','design','launch','start','grow','scale','automate',
+  'maximize','optimize','leverage','capitalize','monetize','profit','earn',
+  'make','generate','attract','convert','retain','engage','inspire',
+  'motivate','empower','encourage','challenge','push','drive','force',
+  'critical','vital','must-know','need-to-know','insider','behind-the-scenes',
+  'never','always','every','all','zero','100','top','best','worst',
+  'most','least','first','last','only','single','one','million','billion',
+];
+
+const EMOTIONAL_WORDS = [
+  'love','hate','fear','hope','joy','anger','sad','happy','excited','worried',
+  'anxious','proud','shame','guilt','jealous','lonely','grateful','frustrated',
+  'inspired','confident','nervous','brave','scared','thrilled','devastated',
+  'heartbroken','overjoyed','terrified','relieved','shocked','amazed','disgusted',
+  'curious','passionate','obsessed','addicted','afraid','courageous','defeated',
+  'victorious','humiliated','celebrated','abandoned','cherished','betrayed','trusted',
+  'regret','nostalgia','envy','sympathy','empathy','compassion','desire','craving',
+  'desperation','urgency','excitement','dread','suspense','wonder','awe','disgust',
+  'pain','suffering','struggle','challenge','triumph','success','failure','loss',
+  'win','defeat','sacrifice','reward','punishment','freedom','trapped','power',
+  'helpless','unstoppable','weak','strong','broken','healed','hurt','comfort',
+];
+
+const CLICKBAIT_PHRASES = [
+  "you won't believe","what happened next","will shock you","will blow your mind",
+  "number \\d+ will surprise you","doctors hate","they don't want you to know",
+  "this one weird trick","gone wrong","gone viral","breaking news","urgent",
+  "this is crazy","insane hack","must watch","open immediately",
+];
+
+const SPAM_WORDS = [
+  'click here','click now','act now','order now','buy now','sign up free',
+  'risk-free','no risk','100% free','absolutely free','cash','money back',
+  'winner','won','prize','congratulations','dear friend','meet singles',
+];
+
+const WEAK_STARTERS = ['a ','an ','the ','this ','that ','these ','those ','i ','we ','you ','it '];
+
+const EXAMPLES = [
+  '10 Proven Ways to Double Your Productivity',
+  'How to Start a Business With No Money',
+  'The Secret Morning Routine of Successful CEOs',
+  'Why Most Diets Fail (And What Actually Works)',
+  '5 Mistakes That Are Killing Your SEO',
+  'I Tried 30 Productivity Apps — Here\'s the Winner',
+];
+
+// ─── SCORING ENGINE ───────────────────────────────────────────────────────────
+function scoreHeadline(text) {
+  const words = text.trim().split(/\s+/).filter(Boolean);
+  const lower = text.toLowerCase();
+  const wordCount = words.length;
+
+  // 1. Power words (0–25) — dedupe so duplicates in the list don't double-count
+  const foundPower = [...new Set(POWER_WORDS.filter(w => {
+    const re = new RegExp(`\\b${w.replace(/-/g,'[- ]')}\\b`, 'i');
+    return re.test(text);
+  }))];
+  const powerScore = Math.min(25, foundPower.length * 9);
+
+  // 2. Emotional words (0–20)
+  const foundEmotion = EMOTIONAL_WORDS.filter(w => new RegExp(`\\b${w}\\b`, 'i').test(text));
+  const emotionScore = Math.min(20, foundEmotion.length * 10);
+
+  // 3. Length (0–20)
+  let lengthScore;
+  if (wordCount >= 6 && wordCount <= 10) lengthScore = 20;
+  else if ((wordCount >= 4 && wordCount <= 5) || (wordCount >= 11 && wordCount <= 12)) lengthScore = 14;
+  else if (wordCount === 3 || (wordCount >= 13 && wordCount <= 15)) lengthScore = 8;
+  else lengthScore = 3;
+
+  // 4. Numbers (0–15)
+  const hasNumber = /\d/.test(text);
+  const numberScore = hasNumber ? 15 : 0;
+
+  // 5. Format bonus (0–20)
+  let formatScore = 0;
+  const isQuestion = text.trim().endsWith('?');
+  const hasBracket = /[\(\[\{]/.test(text);
+  const isHowTo = /^how\s+to\b/i.test(text.trim());
+  const isWhyWhat = /^(why|what|when|where|who|which)\b/i.test(text.trim());
+  const startsWithNumber = /^\d/.test(text.trim());
+  if (isQuestion) formatScore += 7;
+  if (hasBracket) formatScore += 6;
+  if (isHowTo) formatScore += 7;
+  else if (isWhyWhat) formatScore += 5;
+  if (startsWithNumber) formatScore += 5;
+  formatScore = Math.min(20, formatScore);
+
+  // Penalties
+  let penalty = 0;
+  for (const phrase of CLICKBAIT_PHRASES) {
+    if (new RegExp(phrase, 'i').test(lower)) { penalty += 8; break; }
+  }
+  for (const word of SPAM_WORDS) {
+    if (lower.includes(word)) { penalty += 5; break; }
+  }
+  if (text === text.toUpperCase() && wordCount > 2) penalty += 6; // ALL CAPS
+  if ((text.match(/!/g) || []).length > 1) penalty += 4; // Multiple !!
+
+  const total = Math.max(0, Math.min(100, powerScore + emotionScore + lengthScore + numberScore + formatScore - penalty));
+
+  return {
+    total,
+    breakdown: [
+      { name: 'Power Words', score: powerScore, max: 25, detail: foundPower.slice(0,3).join(', ') || 'None found', color: '#6c63ff' },
+      { name: 'Emotional Impact', score: emotionScore, max: 20, detail: foundEmotion.slice(0,3).join(', ') || 'None found', color: '#e53e3e' },
+      { name: 'Optimal Length', score: lengthScore, max: 20, detail: `${wordCount} words${wordCount >= 6 && wordCount <= 10 ? ' ✓ ideal' : wordCount < 6 ? ' — too short' : ' — too long'}`, color: '#38a169' },
+      { name: 'Numbers', score: numberScore, max: 15, detail: hasNumber ? 'Number detected ✓' : 'No numbers found', color: '#d69e2e' },
+      { name: 'Format', score: formatScore, max: 20, detail: [isQuestion&&'Question',hasBracket&&'Brackets',isHowTo&&'How-To',isWhyWhat&&'Why/What',startsWithNumber&&'Starts with #'].filter(Boolean).join(', ')||'No format bonus', color: '#3182ce' },
+    ],
+    meta: { wordCount, foundPower, foundEmotion, hasNumber, isQuestion, hasBracket, isHowTo, isWhyWhat, startsWithNumber, penalty, words },
+  };
+}
+
+// ─── SUGGESTIONS ─────────────────────────────────────────────────────────────
+function buildSuggestions(result, text) {
+  const { meta, breakdown } = result;
+  const suggestions = [];
+
+  if (breakdown[0].score < 15) {
+    const sample = ['proven','ultimate','essential','powerful','secret','effortless'].filter(w => !text.toLowerCase().includes(w)).slice(0,2).join('" or "');
+    suggestions.push({ type: 'warn', icon: '💡', text: `Add a power word to boost clicks. Try inserting "<strong>${sample}</strong>" into your headline.` });
+  }
+  if (breakdown[1].score === 0) {
+    suggestions.push({ type: 'warn', icon: '❤️', text: 'No emotional trigger words detected. Headlines that evoke curiosity, fear, or excitement get significantly more clicks.' });
+  }
+  if (meta.wordCount < 6) {
+    suggestions.push({ type: 'warn', icon: '📏', text: `Your headline is <strong>${meta.wordCount} word${meta.wordCount===1?'':'s'}</strong> — too short. Aim for 6–10 words for maximum clarity and SEO value.` });
+  } else if (meta.wordCount > 12) {
+    suggestions.push({ type: 'warn', icon: '📏', text: `Your headline is <strong>${meta.wordCount} words</strong> — slightly long. Trim to under 12 words to prevent truncation in search results and social previews.` });
+  }
+  if (!meta.hasNumber) {
+    suggestions.push({ type: 'info', icon: '🔢', text: 'Headlines with numbers (e.g. "7 Ways to…", "3 Secrets…") get up to <strong>36% more clicks</strong>. Consider adding a specific number.' });
+  }
+  if (!meta.isQuestion && !meta.hasBracket && !meta.isHowTo && !meta.isWhyWhat && !meta.startsWithNumber) {
+    suggestions.push({ type: 'info', icon: '🎯', text: 'Add a format bonus: end with a <strong>question mark</strong>, add <strong>brackets</strong> with a benefit (e.g. [Free Template]), or open with "How to…" or "Why…"' });
+  }
+  if (result.meta.penalty > 0) {
+    suggestions.push({ type: 'warn', icon: '⚠️', text: 'Your headline contains language associated with clickbait or spam. This reduces trust and CTR. Rephrase to be more specific and genuine.' });
+  }
+  const startsWeak = WEAK_STARTERS.some(s => text.toLowerCase().startsWith(s));
+  if (startsWeak) {
+    suggestions.push({ type: 'info', icon: '✏️', text: 'Your headline starts with a weak article ("A", "An", "The"). Opening with your most important keyword or a number is stronger for SEO and attention.' });
+  }
+
+  // Positive feedback
+  if (breakdown[0].score >= 20) suggestions.push({ type: 'good', icon: '✅', text: `Great use of power words: <strong>${meta.foundPower.slice(0,3).join(', ')}</strong>. These drive higher click-through rates.` });
+  if (breakdown[3].score === 15) suggestions.push({ type: 'good', icon: '✅', text: 'Good — you included a number. Specific numbers increase headline credibility and clicks.' });
+  if (breakdown[2].score === 20) suggestions.push({ type: 'good', icon: '✅', text: `Perfect length at <strong>${meta.wordCount} words</strong>. This is the ideal range for headlines.` });
+
+  return suggestions.slice(0, 5);
+}
+
+// ─── ALTERNATIVES ─────────────────────────────────────────────────────────────
+function buildAlternatives(text, meta) {
+  const clean = text.trim().replace(/[?!.]+$/, '');
+  const alts = [];
+
+  // Extract the core action phrase (strips "10 Ways to", "5 Tips to", etc.)
+  const listMatch = clean.match(/^\d+\s+(?:\w+\s+)?(?:ways?|tips?|tricks?|steps?|secrets?|reasons?|benefits?|mistakes?|hacks?)\s+(?:to\s+)?(.+)/i);
+  const core = listMatch ? listMatch[1] : clean.replace(/^(the\s+|a\s+|an\s+)/i, '');
+  const coreLC = core.charAt(0).toLowerCase() + core.slice(1);
+  const coreUC = core.charAt(0).toUpperCase() + core.slice(1);
+
+  // 1. Number ↔ How-To swap
+  if (!meta.hasNumber) {
+    const n = [5, 7, 10, 3, 12][Math.floor(Math.random() * 5)];
+    alts.push({ label: '+ Number', text: `${n} Ways to ${coreUC}` });
+  } else if (!meta.isHowTo) {
+    alts.push({ label: 'How-To', text: `How to ${coreLC}` });
+  }
+
+  // 2. Bracket bonus
+  const brackets = ['[Free Guide]', '[With Examples]', '[Step-by-Step]', '[2025 Edition]', '[Proven Method]'];
+  const bracket = brackets[Math.floor(Math.random() * brackets.length)];
+  alts.push({ label: '+ Bracket', text: `${clean} ${bracket}` });
+
+  // 3. Question (if not already a question)
+  if (!meta.isQuestion) {
+    alts.push({ label: 'Question', text: `${clean}?` });
+  }
+
+  // 4. Power word injection
+  const powerInserts = ['Ultimate','Simple','Effortless','Secret','Powerful'];
+  const pw = powerInserts.find(w => !text.toLowerCase().includes(w.toLowerCase()));
+  if (pw && meta.wordCount <= 11) {
+    const words = clean.split(' ');
+    const pos = /^\d+$/.test(words[0]) ? 1 : 0;
+    words.splice(pos, 0, pw);
+    alts.push({ label: 'Power Word', text: words.join(' ') });
+  }
+
+  return alts.slice(0, 3);
+}
+
+// ─── VERDICT ─────────────────────────────────────────────────────────────────
+function getVerdict(score) {
+  if (score >= 80) return { cls: 'verdict-excellent', label: '🏆 Excellent', text: 'This headline is well-optimised. It should perform strongly across blogs, email, and social media.' };
+  if (score >= 65) return { cls: 'verdict-great', label: '🎯 Great', text: 'Strong headline with most key elements present. A few tweaks could push it to excellent.' };
+  if (score >= 50) return { cls: 'verdict-good', label: '👍 Good', text: 'A solid headline. Applying the suggestions below could meaningfully increase clicks.' };
+  if (score >= 35) return { cls: 'verdict-fair', label: '⚡ Fair', text: 'Some key elements are missing. The suggestions below will help you improve significantly.' };
+  return { cls: 'verdict-poor', label: '📉 Needs Work', text: 'This headline is missing most key elements. Follow the suggestions to rebuild it.' };
+}
+
+function scoreColor(score) {
+  if (score >= 70) return '#38a169';
+  if (score >= 50) return '#d69e2e';
+  return '#e53e3e';
+}
+
+// ─── RENDER ───────────────────────────────────────────────────────────────────
+function analyze() {
+  const text = document.getElementById('headlineInput').value.trim();
+  if (!text || text.length < 3) return;
+
+  const result = scoreHeadline(text);
+  renderScore(result);
+  renderSuggestions(result, text);
+  renderAlternatives(text, result.meta);
+  saveHistory(text, result.total);
+  renderHistory();
+}
+
+function renderScore(result) {
+  const sec = document.getElementById('resultsSection');
+  sec.style.display = 'block';
+
+  // Ring
+  const circumference = 301.6;
+  const offset = circumference - (result.total / 100) * circumference;
+  const fill = document.getElementById('scoreRingFill');
+  fill.style.stroke = scoreColor(result.total);
+  // Small delay so transition fires
+  setTimeout(() => { fill.style.strokeDashoffset = offset; }, 30);
+
+  document.getElementById('scoreNum').textContent = result.total;
+  document.getElementById('scoreNum').style.color = scoreColor(result.total);
+
+  const verdict = getVerdict(result.total);
+  const badge = document.getElementById('verdictBadge');
+  badge.className = 'verdict-badge ' + verdict.cls;
+  badge.textContent = verdict.label;
+  document.getElementById('verdictText').textContent = verdict.text;
+
+  // Category bars
+  const container = document.getElementById('categoriesContainer');
+  container.innerHTML = '';
+  result.breakdown.forEach(cat => {
+    const pct = Math.round((cat.score / cat.max) * 100);
+    const div = document.createElement('div');
+    div.className = 'cat-row';
+    div.innerHTML = `
+      <div class="cat-header">
+        <span class="cat-name">${cat.name}</span>
+        <span class="cat-pts">${cat.score} / ${cat.max}</span>
+      </div>
+      <div class="cat-bar-bg">
+        <div class="cat-bar-fill" style="width:0%;background:${cat.color}" data-pct="${pct}"></div>
+      </div>
+      <div class="cat-tip">${cat.detail}</div>
+    `;
+    container.appendChild(div);
+  });
+  // Animate bars after paint
+  setTimeout(() => {
+    container.querySelectorAll('.cat-bar-fill').forEach(el => {
+      el.style.width = el.dataset.pct + '%';
+    });
+  }, 50);
+}
+
+function renderSuggestions(result, text) {
+  const sugs = buildSuggestions(result, text);
+  const sec = document.getElementById('suggestionsSection');
+  const list = document.getElementById('suggestionList');
+  list.innerHTML = '';
+  sugs.forEach(s => {
+    const div = document.createElement('div');
+    div.className = `suggestion-item ${s.type}`;
+    div.innerHTML = `<span class="sug-icon">${s.icon}</span><span class="sug-text">${s.text}</span>`;
+    list.appendChild(div);
+  });
+  sec.style.display = sugs.length ? 'block' : 'none';
+}
+
+function renderAlternatives(text, meta) {
+  const alts = buildAlternatives(text, meta);
+  const sec = document.getElementById('altSection');
+  const list = document.getElementById('altList');
+  list.innerHTML = '';
+  alts.forEach(alt => {
+    const div = document.createElement('div');
+    div.className = 'alt-item';
+    div.innerHTML = `
+      <div>
+        <div class="alt-label">${alt.label}</div>
+        <div class="alt-text">${alt.text}</div>
+      </div>
+      <button class="alt-copy-btn" onclick="copyAlt(this, '${alt.text.replace(/'/g,"\\'")}')">Copy</button>
+    `;
+    list.appendChild(div);
+  });
+  sec.style.display = alts.length ? 'block' : 'none';
+}
+
+function copyAlt(btn, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✓ Copied';
+    setTimeout(() => btn.textContent = 'Copy', 1800);
+  });
+}
+
+// ─── HISTORY ─────────────────────────────────────────────────────────────────
+function getHistory() {
+  try { return JSON.parse(localStorage.getItem('hl_history') || '[]'); } catch { return []; }
+}
+function saveHistory(text, score) {
+  let hist = getHistory().filter(h => h.text !== text);
+  hist.unshift({ text, score, ts: Date.now() });
+  hist = hist.slice(0, 10);
+  localStorage.setItem('hl_history', JSON.stringify(hist));
+}
+function renderHistory() {
+  const hist = getHistory();
+  const sec = document.getElementById('historySection');
+  const list = document.getElementById('historyList');
+  if (!hist.length) { sec.style.display = 'none'; return; }
+  sec.style.display = 'block';
+  list.innerHTML = '';
+  hist.forEach((h, i) => {
+    const c = scoreColor(h.score);
+    const div = document.createElement('div');
+    div.className = 'history-item';
+    div.innerHTML = `
+      <div class="history-score-badge" style="background:${c}22;color:${c}">${h.score}</div>
+      <div class="history-headline">${h.text}</div>
+      <button class="history-del" onclick="deleteHistory(${i}, event)" title="Remove">×</button>
+    `;
+    div.addEventListener('click', (e) => {
+      if (e.target.classList.contains('history-del')) return;
+      document.getElementById('headlineInput').value = h.text;
+      onInput();
+      analyze();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    list.appendChild(div);
+  });
+}
+function deleteHistory(idx, e) {
+  e.stopPropagation();
+  const hist = getHistory();
+  hist.splice(idx, 1);
+  localStorage.setItem('hl_history', JSON.stringify(hist));
+  renderHistory();
+}
+function clearHistory() {
+  localStorage.removeItem('hl_history');
+  renderHistory();
+}
+
+// ─── INPUT ────────────────────────────────────────────────────────────────────
+function onInput() {
+  const val = document.getElementById('headlineInput').value;
+  const words = val.trim().split(/\s+/).filter(Boolean).length;
+  document.getElementById('wordCount').textContent = val.trim() ? words : 0;
+  document.getElementById('charCount').textContent = val.length;
+}
+
+document.getElementById('headlineInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); analyze(); }
+});
+
+// ─── EXAMPLES ────────────────────────────────────────────────────────────────
+(function buildExamples() {
+  const row = document.getElementById('examplesRow');
+  EXAMPLES.forEach(ex => {
+    const btn = document.createElement('button');
+    btn.className = 'example-pill';
+    btn.textContent = ex.length > 40 ? ex.slice(0, 38) + '…' : ex;
+    btn.title = ex;
+    btn.onclick = () => {
+      document.getElementById('headlineInput').value = ex;
+      onInput();
+      analyze();
+    };
+    row.appendChild(btn);
+  });
+})();
+
+// ─── FAQ ─────────────────────────────────────────────────────────────────────
+const FAQS = [
+  { q: 'What makes a good headline score?', a: 'A score of 70+ is considered good. Scores above 80 are excellent. Great headlines typically include a power word, a specific number, and are 6–10 words long. A question format or bracket (e.g. [Free Guide]) adds bonus points.' },
+  { q: 'How is the headline score calculated?', a: 'The score is calculated across 5 categories: Power Words (25 pts), Emotional Impact (20 pts), Optimal Length (20 pts), Numbers (15 pts), and Format bonuses like questions, brackets, or How-To openers (20 pts). Clickbait or spam language reduces the score.' },
+  { q: 'What are power words in headlines?', a: 'Power words are psychologically persuasive terms that trigger an emotional or action-oriented response. Examples: proven, secret, ultimate, instantly, guaranteed, free, exclusive, effortless, transform, unlock. Headlines with power words consistently get higher click-through rates.' },
+  { q: 'How long should a headline be?', a: 'The ideal length is 6–10 words, balancing clarity and SEO. For email subject lines, 4–7 words performs best on mobile. Headlines over 14 words are often truncated in search results and social media previews.' },
+  { q: 'Does this work for email subject lines?', a: 'Yes. The same principles apply: power words, emotional triggers, numbers, and length all predict email open rates. Use the tool to score and improve any email subject before sending.' },
+  { q: 'Is my headline data stored anywhere?', a: 'No. All analysis happens entirely in your browser using JavaScript. Your headlines are never sent to any server. The history feature uses your browser\'s localStorage — data stays on your device only.' },
+];
+(function buildFAQ() {
+  const c = document.getElementById('faqContainer');
+  FAQS.forEach(faq => {
+    const d = document.createElement('div');
+    d.className = 'faq-item';
+    d.innerHTML = `<div class="faq-q" onclick="toggleFAQ(this)"><span>${faq.q}</span><span class="chev">▼</span></div><div class="faq-a">${faq.a}</div>`;
+    c.appendChild(d);
+  });
+})();
+function toggleFAQ(el) {
+  const a = el.nextElementSibling;
+  const open = a.classList.contains('open');
+  document.querySelectorAll('.faq-a').forEach(x => x.classList.remove('open'));
+  document.querySelectorAll('.faq-q').forEach(x => x.classList.remove('open'));
+  if (!open) { a.classList.add('open'); el.classList.add('open'); }
+}
+
+// ─── TOAST ───────────────────────────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+// Init
+renderHistory();
+</script>
+</body>
+</html>
