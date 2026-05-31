@@ -262,6 +262,19 @@
 
     .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #1a202c; color: white; padding: 10px 20px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; z-index: 999; pointer-events: none; opacity: 0; transition: opacity 0.2s; }
     .toast.show { opacity: 1; }
+
+    /* ── AD SLOT ── */
+    .ad-slot {
+      background: var(--surface, #f9fafb);
+      border: 2px dashed var(--border, #d1d5db);
+      border-radius: var(--radius, 12px);
+      padding: 20px;
+      text-align: center;
+      color: #9ca3af;
+      font-size: 0.82rem;
+      margin: 24px 0;
+    }
+
   </style>
 </head>
 <body>
@@ -356,11 +369,21 @@
     </p>
   </div>
 
+  <!-- AD SLOT -->
+  <div class="ad-slot">
+    Advertisement<br><small>Google AdSense banner will appear here</small>
+  </div>
+
   <!-- FAQ -->
   <div class="card">
     <div class="card-title">Frequently Asked Questions</div>
     <div id="faqContainer"></div>
   </div>
+  <!-- AD SLOT -->
+  <div class="ad-slot">
+    Advertisement<br><small>Google AdSense banner will appear here</small>
+  </div>
+
 </main>
 
 <footer>
